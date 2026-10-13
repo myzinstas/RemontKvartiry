@@ -6,10 +6,12 @@
 <title>Ремонт квартир под ключ в Краснодаре: расчёт стоимости</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600&family=Unbounded:wght@500;600&display=swap">
 <style>
-:root{color-scheme:dark;--bg:#15181a;--p1:#20262a;--p2:#0f1213;--card:#1e2225;--ink:#eceeed;--mut:#9aa1a7;--line:#30363a;--acc:#8fdc45;--tape:#1c2024;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#e9ebe8;--card:#f7f7f4;--ink:#1c2024;--mut:#5d646b;--line:#cdd1ce;--acc:#8fdc45;--tape:#1c2024;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181a;--card:#1e2225;--ink:#eceeed;--mut:#9aa1a7;--line:#30363a}}
+:root[data-theme="dark"]{--bg:#15181a;--card:#1e2225;--ink:#eceeed;--mut:#9aa1a7;--line:#30363a}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:radial-gradient(circle at 18% 12%,var(--p1) 0,transparent 55%) fixed,radial-gradient(circle at 88% 85%,var(--p2) 0,transparent 50%) fixed,var(--bg);color:var(--ink);font:16px/1.55 "Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 h1,h2,.sum{font-family:Unbounded,"Golos Text",system-ui,sans-serif;font-weight:600;line-height:1.15;margin:0}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0}
@@ -87,6 +89,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--mut);font-siz
       <li>Оплата по этапам, а не всё сразу</li>
       <li>Фотоотчёт после каждого этапа</li>
       <li>Сдача по акту приёмки</li>
+      <li>Натяжной потолок входит в стоимость работ с материалом</li>
     </ul>
     <div class="qr"><div id="qr" role="img" aria-label="QR-код для связи в Telegram"></div><p>Удобнее с телефона? Наведите камеру на код, и откроется наш чат в Telegram.</p></div>
   </div>
@@ -124,7 +127,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--mut);font-siz
 <script>
 const CFG={company:'Ремонт под ключ',phone:'+7 989 811-16-77',tg:'remontykvartirkrasnodar',wa:'79898111677'};
 const RATE=12000;
-const X={design:{n:'Дизайн-проект',pm:3000},ceil:{n:'Натяжные потолки',pm:1200},floor:{n:'Тёплый пол',pm:3000},clean:{n:'Вывоз мусора и клининг',f:20000}};
+const X={design:{n:'Дизайн-проект',pm:3000},floor:{n:'Тёплый пол',pm:3000},clean:{n:'Вывоз мусора и клининг',f:20000}};
 const $=s=>document.querySelector(s);
 const fmt=n=>(Math.round(n/1000)*1000).toLocaleString('ru-RU');
 $('#extras').innerHTML=Object.entries(X).map(([k,v])=>`<label class="pill"><input type="checkbox" name="x" value="${k}"><span>${v.n}</span></label>`).join('');
@@ -137,7 +140,7 @@ function calc(){
   const w=Math.max(6,Math.ceil(a*.12)),w2=Math.max(8,Math.ceil(w*1.3));
   const total=fmt(sum)+' ₽',term='срок '+w+'–'+w2+' нед.';
   $('#areaV').textContent=a+' м²';$('#sum').textContent=total;
-  $('#meta').textContent='Работы по '+fmt(RATE)+' ₽ за м²'+(xs.length?' и допработы':'')+', '+term;
+  $('#meta').textContent='Работы от '+fmt(RATE)+' ₽ за м²'+(xs.length?' и допработы':'')+', '+term;
   const n=$('#name').value.trim(),p=$('#phone').value.trim();
   const msg=['Здравствуйте! Хочу ремонт под ключ в Краснодаре.','Площадь: '+a+' м²',xs.length?'Дополнительно: '+xs.map(k=>X[k].n.toLowerCase()).join(', '):'','Расчёт на сайте: '+total+', '+term,n?'Имя: '+n:'',p?'Телефон: '+p:''].filter(Boolean).join('\n');
   $('#tg').href='https://t.me/'+CFG.tg+'?text='+encodeURIComponent(msg);
